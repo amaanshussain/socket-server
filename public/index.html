@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO App</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="./socketstate.js"></script>
+</head>
+
+<body>
+  <div className="socket-container">
+
+    <h1>Socket.IO Chat</h1>
+    <input id="msg" type="text" placeholder="Type a message">
+    <button onclick="createConnection()">Create Connection</button>
+    <button onclick="endConnection()">End Connection</button>
+    <button onclick="sendMessage()">Send</button>
+    <p>Status: <span id="status">Disconnected</span></p>
+    <ul id="messages"></ul>
+  </div>
+
+  <script>
+    setInterval(() => {
+      render();
+    }, 1000);
+  </script>
+</body>
+
+</html>
