@@ -1,5 +1,80 @@
+body {
+    background-image: linear-gradient(to bottom, #212A40, #202A42);
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+}
 .socket-container {
-    background-color: #aaaaaa;
-    padding: 20px;
+    padding: 12px;
     border-radius: 5px;
+}
+
+.socket-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+.socket-infobox {
+    background-color: #1C243A;
+    width: 30%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.socket-buttonbox {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+.socket-button {
+    background-color: #3A4B6A;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.socket-inputbox {
+    display: flex;
+}
+.socket-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #3A4B6A;
+    background-color: #202A42;
+    color: #ffffff;
+    font-size: 0.9rem;
+    resize: none;
+    height: 200px;
+}
+.socket-input:focus {
+    outline: none;
+}
+.socket-messagebox {
+    background-color: #1C243A;
+    border-radius: 5px;
+    width: 70%;
+    padding: 12px;
+}
+.socket-messages {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.socket-message {
+    background-color: #202A42;
+    padding: 4px;
+    margin: 4px 0;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+.socket-message-ts {
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.8rem;
+    color: #888888;
+    line-height: 25%;
 }

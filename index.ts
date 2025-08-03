@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
 // import { Server } from "socket.io";
-import { WebSocketServer } from "ws";
+import WebSocket, { WebSocketServer } from "ws";
 
 // server setup
 const port = 3000;
@@ -10,9 +10,22 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 // host setup
-let host_id = null;
-
-
+let host_socket: WebSocket | null = null;
+setInterval(() => {
+    // send server status
+    if (host_socket) {
+        const clients = wss.clients;
+        clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(["status", JSON.stringify({
+                    type: "status",
+                    message: `Connected clients: ${clients.size}`,
+                    timestamp: new Date().toISOString()
+                })].join("␟"));
+            }
+        })
+    }
+}, 1000)
 
 app.use(express.static('public'));
 
@@ -21,19 +34,26 @@ server.listen(port, () => {
 });
 
 wss.on("connection", (socket) => {
-    console.log("A user connected:", socket);
+    console.log("A user connected.");
     if (!socket) {
         return;
     }
-    socket.on("auth", (data) => {
-        console.log("Auth data received:", data);
-    })
-
     socket.onmessage = (event) => {
-        const data = String(event.data).split("␟");
-        console.log("Message received:", data);
-        socket.send(["auth", data[1]].join("␟"));
+        const data = String(event.data);
+        if (data === "adminlogin") {
+            host_socket = socket;
+            console.log("Host socket set.");
+            socket.send(["message", "Accepted as socket host."].join("␟"));
+            return;
+        }
 
+        if (!host_socket) {
+            console.log("Host socket not set, ignoring message.");
+            return;
+        }
+        host_socket.send(["message", data].join("␟"));
+        
+        
     }
 
 });
