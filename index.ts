@@ -31,7 +31,7 @@ setInterval(() => {
             socketIds: Array.from(clients).map(client => (client as CustomWebSocket).socketId || "unknown"),
             hostSocketId: host_socket.socketId || null,
         };
-        host_socket.send(["status", JSON.stringify(state)].join("␟"));
+        host_socket.send(["status", host_socket.socketId, JSON.stringify(state)].join("␟"));
     }
 }, 250)
 
@@ -79,7 +79,7 @@ wss.on("connection", (socket: CustomWebSocket) => {
             console.log("Host socket not set, ignoring message.");
             return;
         }
-        host_socket.send(["message", data].join("␟"));
+        host_socket.send(["message", socket.socketId, data].join("␟"));
     }
 
 });

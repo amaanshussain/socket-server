@@ -4,6 +4,8 @@ let socketState = {
     socketIds: [],
     hostSocketId: null,
 };
+// { "uuid": [{"type": "incoming", "message": "Hello"}] }
+let messageState = {}
 
 // SOCKET FUNCTIONS
 function createConnection() {
@@ -11,7 +13,6 @@ function createConnection() {
         console.log("Socket already connected");
         return;
     }
-    addMessage("info", "Creating connection...");
     socket = new WebSocket("ws://localhost:3000");
 
     socket.onopen = function () {
@@ -22,13 +23,20 @@ function createConnection() {
     socket.onmessage = function (event) {
         const msg = event.data.split("␟");
         const svc = msg[0];
-        const data = msg[1];
+        const socketId = msg[1];
+        const data = msg[2];
 
         if (svc === "status") {
             socketState = JSON.parse(data);
+            const socketIds = socketState.socketIds || [];
+            socketIds.forEach((id) => {
+                if (!messageState[id]) {
+                    messageState[id] = [{ type: "outgoing", message: `Welcome to the socket server! Your socket ID is ${id}.` }];
+                }
+            });
         }
         if (svc === "message") {
-            addMessage("incoming", data);
+            setMessageState(socketId, "incoming", data);
         }
     }
 }
@@ -37,7 +45,6 @@ function endConnection() {
         socket.close();
         socket = null;
         console.log("Socket disconnected");
-        addMessage("info", "Closing connection.");
     } else {
         console.log("No active socket connection to disconnect");
     }
@@ -62,7 +69,7 @@ function sendMessage() {
         return;
     }
 
-    addMessage("outgoing", message);
+    setMessageState(selectedSocketId, "outgoing", message);
     socket.send(["broadcast", selectedSocketId, message].join("␟"));
     msgInput.value = "";
 
@@ -74,17 +81,51 @@ function getSocketState() {
 
 // DOCUMENT RENDER
 function render() {
+    cleanMessageState();
     setConnectionStatus();
     setConnectionsList();
+    setMessages();
 }
 
-function addMessage(type, msg) {
+function setMessageState(uuid, type, message) {
+    messageState[uuid].push({ type, message });
+}
+
+function cleanMessageState() {
+    const currentSocketIds = socketState.socketIds;
+    for (const uuid in messageState) {
+        if (!currentSocketIds.includes(uuid)) {
+            delete messageState[uuid];
+        }
+    }
+}
+
+function setMessages() {
     const messagesElement = document.getElementById("messages");
-    let cell = document.getElementById("initial-message").cloneNode(true);
-    cell.innerHTML = msg;
-    cell.classList = `socket-message socket-${type}`;
-    cell.style.display = "block"; // Make sure the cloned element is visible
-    messagesElement.appendChild(cell);
+    if (!messagesElement) {
+        console.error("Messages element not found");
+        return;
+    }
+
+    const selectedSocketId = document.getElementById("socket-select").value;
+    if (selectedSocketId === "none") {
+        messagesElement.innerHTML = "";
+        return;
+    }
+    if (!messageState[selectedSocketId]) {
+        messagesElement.innerHTML = "<p class='socket-message socket-info'>No messages found.</p>";
+        return;
+    }
+
+    messagesElement.innerHTML = ""; // Clear existing messages
+
+    messageState[selectedSocketId].forEach((msg) => {
+        let cell = document.getElementById("initial-message").cloneNode(true);
+        cell.innerHTML = msg.message;
+        cell.classList = `socket-message socket-${msg.type}`;
+        cell.style.display = "block"; // Make sure the cloned element is visible
+        messagesElement.appendChild(cell);
+    });
 }
 
 function setConnectionStatus() {
