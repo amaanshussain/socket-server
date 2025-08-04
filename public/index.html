@@ -2,62 +2,62 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Socket.IO App</title>
+    <meta charset="UTF-8">
+    <title>Socket.IO App</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <link rel="stylesheet" href="index.css">
-  <script src="socketstate.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="socketstate.js"></script>
 </head>
 
 <body>
-  <div class="socket-container">
+    <div class="socket-container">
 
-    <h1>WebSocket Chat</h1>
-    <div class="socket-layout">
-      <div class="socket-infobox">
-        <div>
-          <h2>Socket Info</h2>
-          <p>Status: <span id="status">Disconnected</span></p>
-          <div class="socket-buttonbox">
-            <button class="socket-button" onclick="createConnection()">Create Connection</button>
-            <button class="socket-button" onclick="endConnection()">End Connection</button>
-          </div>
+        <h1>WebSocket Interface</h1>
+
+        <div class="socket-layout">
+            <div class="socket-infobox">
+                <div>
+                    <h2>Socket Info</h2>
+                    <p>Status: <span id="status">Disconnected</span></p>
+                    <div class="socket-buttonbox">
+                        <button class="socket-button" onclick="createConnection()">Create Connection</button>
+                        <button class="socket-button" onclick="endConnection()">End Connection</button>
+                    </div>
+                </div>
+                <div class="socket-connectionbox">
+                    <select class="socket-select" id="socket-select">
+                        <option value="">Create a connection</option>
+                    </select>
+                </div>
+                <div class="socket-inputbox">
+                    <textarea class="socket-input" id="msg" placeholder="Type a message"></textarea>
+                </div>
+                <button class="socket-button" onclick="sendMessage()">Send</button>
+            </div>
+
+            <div class="socket-messagebox">
+                <h2>Messages</h2>
+                <div class="socket-messages" id="messages">
+                    <div class="socket-message socket-info" id="initial-message">
+                        <p>Client started, create a connection.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="socket-inputbox">
-          <textarea class="socket-input" id="msg" placeholder="Type a message"></textarea>
-        </div>
-        <button class="socket-button" onclick="sendMessage()">Send</button>
-      </div>
-      <div class="socket-messagebox">
-        <h2>Messages</h2>
-        <div class="socket-messages" id="messages">
-          <div class="socket-message" id="initial-message">
-            <p>Client started, create a connection.</p>
-          </div>
-          <div class="socket-message" id="initial-message">
-            <p>{ "requestid": "0", "service": "ADMIN", "command": "LOGIN", "SchwabClientCustomerId":
-              "b8004c28e7481f28e540c75b4df0c2e1e0491d02c7e5dfba583c39c33ee54209", "SchwabClientCorrelId":
-              "92fbfd10-5ea5-bf3c-8f80-b03b314c6643", "parameters": { "Authorization":
-              "I0.b2F1dGgyLmJkYy5zY2h3YWIuY29t.svuomd3YnjMQf7sstLGrZ8D3Pg_0pkVotRNd1LKs5UM@", "SchwabClientChannel":
-              "N9", "SchwabClientFunctionId": "APIAPP" } }</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    setInterval(() => {
-      render();
-    }, 1000);
-  </script>
+    <script>
+        setInterval(() => {
+            render();
+        }, 1000);
+    </script>
 </body>
 
 </html>

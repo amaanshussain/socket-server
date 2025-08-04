@@ -1,5 +1,11 @@
 let socket;
-// createConnection();
+let socketState = {
+    clientCount: 0,
+    socketIds: [],
+    hostSocketId: null,
+};
+
+createConnection();
 
 // SOCKET FUNCTIONS
 function createConnection() {
@@ -7,6 +13,7 @@ function createConnection() {
         console.log("Socket already connected");
         return;
     }
+    addMessage("info", "Creating connection...");
     socket = new WebSocket("ws://localhost:3000");
 
     socket.onopen = function () {
@@ -17,12 +24,13 @@ function createConnection() {
     socket.onmessage = function (event) {
         const msg = event.data.split("␟");
         const svc = msg[0];
+        const data = msg[1];
 
         if (svc === "status") {
-
+            socketState = JSON.parse(data);
         }
         if (svc === "message") {
-            addMessage(msg[1]);
+            addMessage("incoming", data);
         }
     }
 }
@@ -31,7 +39,7 @@ function endConnection() {
         socket.close();
         socket = null;
         console.log("Socket disconnected");
-        addMessage("Closing connection.");
+        addMessage("info", "Closing connection.");
     } else {
         console.log("No active socket connection to disconnect");
     }
@@ -39,29 +47,78 @@ function endConnection() {
 function sendMessage() {
     const msgInput = document.getElementById("msg");
     const message = msgInput.value;
-    if (socket && getSocketState()) {
-        socket.send(message);
-        msgInput.value = "";
-    } else {
-        console.log("Socket is not connected");
+
+    if (!socket || !getSocketState()) {
+        console.log("No active socket connection to send message");
+        return;
     }
+
+    const selectedSocketId = document.getElementById("socket-select").value;
+    if (selectedSocketId === "none") {
+        console.log("No socket selected");
+        return;
+    }
+
+    addMessage("outgoing", message);
+    socket.send(["broadcast", selectedSocketId, message].join("␟"));
+    msgInput.value = "";
+
 }
 
 function getSocketState() {
     return socket?.readyState === WebSocket.OPEN;
 }
 
-// SOCKET EVENT LISTENERS
+function addMessage(type, msg) {
+    const messagesElement = document.getElementById("messages");
+    let cell = document.getElementById("initial-message").cloneNode(true);
+    cell.innerHTML = msg;
+    cell.classList = `socket-message socket-${type}`;
+    messagesElement.appendChild(cell);
+}
+
+// SOCKET STATE
 function render() {
+    setConnectionStatus();
+    setConnectionsList();
+}
+
+function setConnectionStatus() {
     const statusElement = document.getElementById("status");
     if (statusElement) {
         statusElement.textContent = getSocketState() ? "Connected" : "Disconnected";
     }
 }
 
-function addMessage(msg) {
-    const messagesElement = document.getElementById("messages");
-    let cell = document.getElementById("initial-message").cloneNode(true);
-    cell.innerHTML = msg;
-    messagesElement.appendChild(cell);
+function setConnectionsList() {
+    const selectElement = document.getElementById("socket-select");
+    if (!selectElement) {
+        console.error("Socket select element not found");
+        return;
+    }
+    selectElement.innerHTML = ""; // Clear existing options
+
+    const connected = getSocketState();
+    if (!connected) {
+        const option = document.createElement("option");
+        option.value = "none";
+        option.textContent = "Create a connection";
+        selectElement.appendChild(option);
+        return;
+    }
+
+    const socketIds = socketState.socketIds.filter(id => id !== socketState.hostSocketId);
+    if (socketIds && socketIds.length > 0) {
+        socketIds.forEach((id) => {
+            const option = document.createElement("option");
+            option.value = id;
+            option.textContent = id;
+            selectElement.appendChild(option);
+        });
+    } else {
+        const option = document.createElement("option");
+        option.value = "none";
+        option.textContent = "Waiting for connections...";
+        selectElement.appendChild(option);
+    }
 }

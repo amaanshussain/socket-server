@@ -3,6 +3,21 @@ body {
     color: #ffffff;
     font-family: "Poppins", sans-serif;
 }
+
+::-webkit-scrollbar {
+    width: 12px;
+    background: #202A42;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #121825;
+    border-radius: 6px;
+    cursor: pointer;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #161c29;
+}
+
 .socket-container {
     padding: 12px;
     border-radius: 5px;
@@ -13,6 +28,7 @@ body {
     flex-direction: row;
     gap: 12px;
 }
+
 .socket-infobox {
     background-color: #1C243A;
     width: 30%;
@@ -21,11 +37,13 @@ body {
     flex-direction: column;
     gap: 8px;
 }
+
 .socket-buttonbox {
     display: flex;
     flex-direction: row;
     gap: 8px;
 }
+
 .socket-button {
     background-color: #3A4B6A;
     color: #ffffff;
@@ -36,9 +54,24 @@ body {
     cursor: pointer;
     font-size: 0.9rem;
 }
+.socket-connectionbox {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.socket-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #3A4B6A;
+    background-color: #202A42;
+    color: #ffffff;
+    font-size: 0.9rem;
+}
 .socket-inputbox {
     display: flex;
 }
+
 .socket-input {
     width: 100%;
     padding: 8px;
@@ -50,20 +83,24 @@ body {
     resize: none;
     height: 200px;
 }
+
 .socket-input:focus {
     outline: none;
 }
+
 .socket-messagebox {
     background-color: #1C243A;
     border-radius: 5px;
     width: 70%;
     padding: 12px;
 }
+
 .socket-messages {
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
 }
+
 .socket-message {
     background-color: #202A42;
     padding: 4px;
@@ -71,6 +108,17 @@ body {
     border-radius: 4px;
     font-size: 0.8rem;
 }
+
+.socket-incoming {
+    border-left: #4a48be 4px solid;
+}
+.socket-outgoing {
+    border-left: #be6448 4px solid;
+}
+.socket-info {
+    border-left: #bdbdbd 4px solid;
+}
+
 .socket-message-ts {
     right: 8px;
     bottom: 8px;
