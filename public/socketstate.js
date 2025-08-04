@@ -46,6 +46,11 @@ function sendMessage() {
     const msgInput = document.getElementById("msg");
     const message = msgInput.value;
 
+    if (!message || message.trim() === "") {
+        console.log("Message cannot be empty");
+        return;
+    }
+
     if (!socket || !getSocketState()) {
         console.log("No active socket connection to send message");
         return;
@@ -78,6 +83,7 @@ function addMessage(type, msg) {
     let cell = document.getElementById("initial-message").cloneNode(true);
     cell.innerHTML = msg;
     cell.classList = `socket-message socket-${type}`;
+    cell.style.display = "block"; // Make sure the cloned element is visible
     messagesElement.appendChild(cell);
 }
 

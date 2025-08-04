@@ -1,4 +1,9 @@
+html,
 body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     background-image: linear-gradient(to bottom, #212A40, #202A42);
     color: #ffffff;
     font-family: "Poppins", sans-serif;
@@ -22,12 +27,16 @@ body {
 .socket-container {
     padding: 12px;
     border-radius: 5px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .socket-layout {
     display: flex;
     flex-direction: row;
     gap: 12px;
+    flex: 1;
 }
 
 .socket-infobox {
