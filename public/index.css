@@ -14,6 +14,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #161c29;
 }
@@ -54,11 +55,13 @@ body {
     cursor: pointer;
     font-size: 0.9rem;
 }
+
 .socket-connectionbox {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
 .socket-select {
     width: 100%;
     padding: 8px;
@@ -68,6 +71,7 @@ body {
     color: #ffffff;
     font-size: 0.9rem;
 }
+
 .socket-inputbox {
     display: flex;
 }
@@ -95,6 +99,21 @@ body {
     padding: 12px;
 }
 
+.socket-messages-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.socket-messages-types {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.socket-type {
+    padding: 0 4px;
+}
+
 .socket-messages {
     width: 100%;
     display: flex;
@@ -112,9 +131,11 @@ body {
 .socket-incoming {
     border-left: #4a48be 4px solid;
 }
+
 .socket-outgoing {
     border-left: #be6448 4px solid;
 }
+
 .socket-info {
     border-left: #bdbdbd 4px solid;
 }

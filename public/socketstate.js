@@ -5,8 +5,6 @@ let socketState = {
     hostSocketId: null,
 };
 
-createConnection();
-
 // SOCKET FUNCTIONS
 function createConnection() {
     if (socket) {
@@ -69,18 +67,18 @@ function getSocketState() {
     return socket?.readyState === WebSocket.OPEN;
 }
 
+// DOCUMENT RENDER
+function render() {
+    setConnectionStatus();
+    setConnectionsList();
+}
+
 function addMessage(type, msg) {
     const messagesElement = document.getElementById("messages");
     let cell = document.getElementById("initial-message").cloneNode(true);
     cell.innerHTML = msg;
     cell.classList = `socket-message socket-${type}`;
     messagesElement.appendChild(cell);
-}
-
-// SOCKET STATE
-function render() {
-    setConnectionStatus();
-    setConnectionsList();
 }
 
 function setConnectionStatus() {
