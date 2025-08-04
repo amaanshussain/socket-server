@@ -33,7 +33,7 @@
                 </div>
                 <div class="socket-connectionbox">
                     <select class="socket-select" id="socket-select">
-                        <option value="">Create a connection</option>
+                        <option value="none">Create a connection</option>
                     </select>
                 </div>
                 <div class="socket-inputbox">
@@ -57,14 +57,14 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
     <script>
         setInterval(() => {
             render();
-        }, 1000);
+        }, 250);
         createConnection();
     </script>
 </body>

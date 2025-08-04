@@ -94,8 +94,11 @@ function setConnectionsList() {
         console.error("Socket select element not found");
         return;
     }
+
+    const selectedSocketId = selectElement.value;
     selectElement.innerHTML = ""; // Clear existing options
 
+    // Create a default option
     const connected = getSocketState();
     if (!connected) {
         const option = document.createElement("option");
@@ -105,6 +108,7 @@ function setConnectionsList() {
         return;
     }
 
+    // Add all socket IDs except the host socket ID
     const socketIds = socketState.socketIds.filter(id => id !== socketState.hostSocketId);
     if (socketIds && socketIds.length > 0) {
         socketIds.forEach((id) => {
@@ -119,4 +123,15 @@ function setConnectionsList() {
         option.textContent = "Waiting for connections...";
         selectElement.appendChild(option);
     }
+
+    // If a socket is selected, set it as the value
+    if (selectedSocketId && selectedSocketId !== "none") {
+        selectElement.value = selectedSocketId;
+    } else {
+        // If no socket is selected, default to the first available socket ID
+        if (socketIds.length > 0) {
+            selectElement.value = socketIds[0];
+        }
+    }
+
 }

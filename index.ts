@@ -33,7 +33,7 @@ setInterval(() => {
         };
         host_socket.send(["status", JSON.stringify(state)].join("␟"));
     }
-}, 1000)
+}, 250)
 
 app.use(express.static('public'));
 
